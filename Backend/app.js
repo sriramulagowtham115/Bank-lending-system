@@ -4,13 +4,17 @@ const bodyParser = require('body-parser');
 const db = require('./models');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Middleware
+// ✅ Allow both local and deployed frontend
 app.use(cors({
-  origin: 'http://localhost:3000', // React app origin
+  origin: [
+    'http://localhost:3000',
+    'https://bank-lending-system-client.onrender.com'
+  ],
   credentials: true
 }));
+
 app.use(bodyParser.json());
 
 // Routes
@@ -20,7 +24,7 @@ const customerRoutes = require('./routes/customerRoutes');
 app.use('/api/loans', loanRoutes);
 app.use('/api/customers', customerRoutes);
 
-
+// Test route
 app.get('/', (req, res) => {
   res.send('🚀 Bank Lending API is running!');
 });
