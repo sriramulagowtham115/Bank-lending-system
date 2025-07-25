@@ -1,0 +1,23 @@
+{
+  "name": "bank-lending-system",
+  "version": "1.0.0",
+  "main": "app.js",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "scripts": {
+    "start": "nodemon Backend/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
