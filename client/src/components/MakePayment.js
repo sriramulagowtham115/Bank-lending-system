@@ -7,15 +7,17 @@ function MakePayment() {
   const [paymentAmount, setPaymentAmount] = useState('');
   const [message, setMessage] = useState('');
 
+  const API = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+
   // Fetch loans from backend
   useEffect(() => {
-    axios.get('http://localhost:5000/api/loans')
+    axios.get(`${API}/api/loans`)
       .then(res => setLoans(res.data))
       .catch(err => {
         console.error('❌ Error fetching loans:', err);
         setMessage('Failed to load loans.');
       });
-  }, []);
+  }, [API]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,11 +27,11 @@ function MakePayment() {
       return;
     }
 
-    axios.post('http://localhost:5000/api/loans/payment', {
+    axios.post(`${API}/api/loans/payment`, {
       loan_id: selectedLoanId,
       payment_amount: parseFloat(paymentAmount)
     })
-      .then(res => {
+      .then(() => {
         setMessage('✅ Payment successful!');
         setPaymentAmount('');
         setSelectedLoanId('');

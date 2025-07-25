@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './AccountOverview.css';
 
+const API = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+
 function AccountOverview() {
   const [input, setInput] = useState('');
   const [loans, setLoans] = useState([]);
@@ -22,8 +24,8 @@ function AccountOverview() {
     }
 
     const url = isEmail(trimmed)
-      ? `http://localhost:5000/api/customers/email/${encodeURIComponent(trimmed)}/loans`
-      : `http://localhost:5000/api/customers/${trimmed}/loans`;
+      ? `${API}/api/customers/email/${encodeURIComponent(trimmed)}/loans`
+      : `${API}/api/customers/${trimmed}/loans`;
 
     try {
       const response = await fetch(url);
@@ -52,7 +54,10 @@ function AccountOverview() {
   };
 
   const formatCurrency = (num) =>
-    Number(num || 0).toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
+    Number(num || 0).toLocaleString('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+    });
 
   return (
     <div className="account-overview">

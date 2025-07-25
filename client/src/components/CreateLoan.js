@@ -10,15 +10,17 @@ function CreateLoan() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const API = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+
   // Fetch customers
   useEffect(() => {
-    axios.get('http://localhost:5000/api/customers')
+    axios.get(`${API}/api/customers`)
       .then(res => setCustomers(res.data))
       .catch(err => {
         console.error('❌ Error fetching customers:', err);
         setMessage('❌ Failed to load customers.');
       });
-  }, []);
+  }, [API]);
 
   const handleLoanSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +40,7 @@ function CreateLoan() {
 
     try {
       setLoading(true);
-      await axios.post('http://localhost:5000/api/loans', newLoan);
+      await axios.post(`${API}/api/loans`, newLoan);
       setMessage('✅ Loan created successfully!');
       setAmount('');
       setLoanPeriod('');

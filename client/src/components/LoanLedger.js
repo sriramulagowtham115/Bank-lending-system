@@ -9,52 +9,51 @@ function LoanLedger() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-const fetchLedger = async () => {
-  setError('');
-  setSummary(null);
-  setLedger([]);
-  setLoading(true);
+  const API = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
 
-  if (!inputValue.trim()) {
-    setError('Please enter a valid Loan ID or Email');
-    setLoading(false);
-    return;
-  }
+  const fetchLedger = async () => {
+    setError('');
+    setSummary(null);
+    setLedger([]);
+    setLoading(true);
 
-  try {
-    const url = inputMode === 'loanId'
-      ? `http://localhost:5000/api/loans/${inputValue}/ledger`
-      : `http://localhost:5000/api/customers/email/${inputValue}/ledger`;
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    console.log("✅ Response:", data);
-
-    if (res.ok) {
-      // extract summary depending on mode
-      const summaryData = {
-        emi: data.emi ?? (data.loans?.[0]?.monthly_emi ?? 0),
-        totalPaid: data.totalPaid ?? 0,
-        remainingBalance: data.remainingBalance ?? 0,
-        emisLeft: data.emisLeft ?? 0
-      };
-
-      setSummary(summaryData);
-
-      // get payments array
-      const payments = data.Payments || (data.loans?.flatMap(loan => loan.Payments) || []);
-      setLedger(payments);
-    } else {
-      setError(data.error || 'Failed to fetch ledger');
+    if (!inputValue.trim()) {
+      setError('Please enter a valid Loan ID or Email');
+      setLoading(false);
+      return;
     }
-  } catch (err) {
-    setError('Network error');
-  } finally {
-    setLoading(false);
-  }
-};
 
+    try {
+      const url = inputMode === 'loanId'
+        ? `${API}/api/loans/${inputValue}/ledger`
+        : `${API}/api/customers/email/${inputValue}/ledger`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      console.log("✅ Response:", data);
+
+      if (res.ok) {
+        const summaryData = {
+          emi: data.emi ?? (data.loans?.[0]?.monthly_emi ?? 0),
+          totalPaid: data.totalPaid ?? 0,
+          remainingBalance: data.remainingBalance ?? 0,
+          emisLeft: data.emisLeft ?? 0
+        };
+
+        setSummary(summaryData);
+
+        const payments = data.Payments || (data.loans?.flatMap(loan => loan.Payments) || []);
+        setLedger(payments);
+      } else {
+        setError(data.error || 'Failed to fetch ledger');
+      }
+    } catch (err) {
+      setError('Network error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="container">
@@ -71,30 +70,28 @@ const fetchLedger = async () => {
         </label>
       </div>
 
-<div className="input-group">
-  <input
-    type="text"
-    placeholder={inputMode === 'loanId' ? 'Enter Loan ID' : 'Enter Customer Email'}
-    value={inputValue}
-    onChange={(e) => setInputValue(e.target.value)}
-  />
-  <button onClick={fetchLedger} disabled={loading}>
-    {loading ? 'Loading...' : 'Fetch Ledger'}
-  </button>
-</div>
+      <div className="input-group">
+        <input
+          type="text"
+          placeholder={inputMode === 'loanId' ? 'Enter Loan ID' : 'Enter Customer Email'}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <button onClick={fetchLedger} disabled={loading}>
+          {loading ? 'Loading...' : 'Fetch Ledger'}
+        </button>
+      </div>
 
       {error && <p className="error">{error}</p>}
 
-{summary && (
-  <div className="summary">
-    <p><strong>EMI:</strong> ₹{typeof summary.emi === 'number' ? summary.emi.toFixed(2) : 'N/A'}</p>
-    <p><strong>Total Paid:</strong> ₹{typeof summary.totalPaid === 'number' ? summary.totalPaid.toFixed(2) : 'N/A'}</p>
-    <p><strong>Remaining Balance:</strong> ₹{typeof summary.remainingBalance === 'number' ? summary.remainingBalance.toFixed(2) : 'N/A'}</p>
-    <p><strong>EMIs Left:</strong> {typeof summary.emisLeft === 'number' ? summary.emisLeft : 'N/A'}</p>
-  </div>
-)}
-
-
+      {summary && (
+        <div className="summary">
+          <p><strong>EMI:</strong> ₹{typeof summary.emi === 'number' ? summary.emi.toFixed(2) : 'N/A'}</p>
+          <p><strong>Total Paid:</strong> ₹{typeof summary.totalPaid === 'number' ? summary.totalPaid.toFixed(2) : 'N/A'}</p>
+          <p><strong>Remaining Balance:</strong> ₹{typeof summary.remainingBalance === 'number' ? summary.remainingBalance.toFixed(2) : 'N/A'}</p>
+          <p><strong>EMIs Left:</strong> {typeof summary.emisLeft === 'number' ? summary.emisLeft : 'N/A'}</p>
+        </div>
+      )}
 
       {ledger.length > 0 && (
         <table>

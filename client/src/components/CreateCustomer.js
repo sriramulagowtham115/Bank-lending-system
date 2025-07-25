@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import './CreateCustomer.css';
 
@@ -8,13 +7,15 @@ function CreateCustomer() {
   const [customerId, setCustomerId] = useState(null);
   const [error, setError] = useState('');
 
+  const API = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setCustomerId(null);
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/customers', {
+      const response = await fetch(`${API}/api/customers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email })
