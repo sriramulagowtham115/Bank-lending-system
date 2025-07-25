@@ -8,16 +8,11 @@ A full-stack application built using:
 
 🌐 **Live Demo**: [https://bank-lending-system-client.onrender.com/](https://bank-lending-system-client.onrender.com/)
 
----
-
 ## 📌 Features
 
-- Create and manage loans
-- Record EMI and lump sum payments
-- View customer loan balances and overviews
-- Real-time loan ledger tracking
-
----
+- Loan Creation
+- EMI Ledger & Lump Sum Payments
+- Account Overview with Balances
 
 ## 🛠 Technologies Used
 
@@ -28,42 +23,34 @@ A full-stack application built using:
 - SQLite
 - Bootstrap & CSS
 
----
-
 ## 📂 Folder Structure
-├── client # React Frontend
-│ ├── public
-│ └── src
-│ ├── components
-│ ├── pages
-│ └── App.js
-├── server # Node.js + Express Backend
-│ ├── controllers
-│ ├── models # Sequelize models
-│ ├── routes # API routes
-│ └── server.js
 
-
----
+```
+├── client                 # React Frontend
+│   ├── public
+│   └── src
+│       ├── components
+│       ├── pages
+│       └── App.js
+├── server                 # Node.js + Express Backend
+│   ├── controllers
+│   ├── models             # Sequelize models
+│   ├── routes             # API routes
+│   └── server.js
+```
 
 ## 🚀 Getting Started
 
 ```bash
-# Clone the repository
-git clone https://github.com/sriramulagowtham115/Bank-lending-system.git
-cd Bank-lending-system
+git clone https://github.com/sriramulagowtham115/Bank-lending-system
+cd bank-lending-system
 
-# Install dependencies
 npm install
-
-# Start the server
 npm start
-👨‍💻 Author
-Sriramula Gowtham
+```
 
-📧 sriramulagowtham115@gmail.com
+## 👨‍💻 Author
 
-🔗 LinkedIn
-
-yaml
-Copy code
+- Sriramula Gowtham  
+- [LinkedIn](https://www.linkedin.com/in/gowtham-sriramula-792307320/)  
+- [Email](mailto:sriramulagowtham115@gmail.com)
